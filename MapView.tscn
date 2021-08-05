@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://from_rec_pol.shader" type="Shader" id=2]
+[ext_resource path="res://ProjetionSelection.gd" type="Script" id=3]
+[ext_resource path="res://TextureRect.gd" type="Script" id=4]
+[ext_resource path="res://MapView.gd" type="Script" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+
+[node name="MapView" type="ReferenceRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_clip_content = true
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer"]
+material = SubResource( 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
+stretch_mode = 6
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionButton" type="OptionButton" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -104.0
+margin_top = 8.0
+margin_right = -1.0
+margin_bottom = 28.0
+grow_horizontal = 0
+text = "Rectangular"
+items = [ "Rectangular", null, false, 0, false, "Polar", null, false, 1, false ]
+selected = 0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="RichTextLabel" parent="OptionButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 13.0
+margin_top = 32.0
+margin_right = 226.0
+margin_bottom = 132.0
+grow_horizontal = 0
+text = "\"Equidistant cylindrical projection\"
+ - Lattitudes and longitudes are evenly spaced.
+#
+\"Azimuthal equidistant projection\"
+(Both poles, Cropped)
+ - All points are correct distance from pole."
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
