@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "TextureRect",
 "class": "MapRect",
 "language": "GDScript",
-"path": "res://TextureRect.gd"
+"path": "res://scripts/TextureRect.gd"
 } ]
 _global_script_class_icons={
 "MapRect": ""
@@ -21,13 +21,13 @@ _global_script_class_icons={
 [application]
 
 config/name="GlobeRoller2"
-run/main_scene="res://Void.tscn"
+run/main_scene="res://scenes/Void.tscn"
 run/low_processor_mode=true
 config/icon="res://icon.png"
 
 [autoload]
 
-Main="*res://Main.tscn"
+Main="*res://scenes/Main.tscn"
 
 [display]
 
