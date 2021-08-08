@@ -16,20 +16,27 @@ void fragment() {
     vec2 uv2 = UV * proportion;  
 
     vec2 pos;
+    float angle;
+    float rad;
     
+//    angle = atan(uv2.y - 0.5, uv2.x - 0.5) / TAU;
+//    rad = pythag(uv2);
     
     if (UV.x <= 0.5) {
         uv2 += -circumcenter;
-        pos.x = 0.5 - atan(uv2.y, uv2.x) / TAU;
-        pos.y = pythag(uv2);
+        angle = 0.5 - atan(uv2.y, uv2.x) / TAU;
+        rad = pythag(uv2);
+
     }
     else {
         uv2 += -circumcenter;
         uv2.x -= 1.0;
-        pos.x = 0.5 - atan(uv2.y, -uv2.x) / TAU;
-        pos.y = 1.0 - pythag(uv2);
+        angle = 0.5 - atan(uv2.y, -uv2.x) / TAU;
+        rad = 1.0 - pythag(uv2);
     }
-//    pos.x += 0.5;
-    COLOR = texture(TEXTURE, pos);
-//    COLOR.a *= max(1.0 * pos.y)
+    float threshhold = ((0.5 + TEXTURE_PIXEL_SIZE.x) - pythag(uv2))/ TEXTURE_PIXEL_SIZE.x;
+    pos = vec2(angle, rad);
+    COLOR = texture(TEXTURE, vec2(angle, rad));
+    COLOR.a *= clamp(threshhold, 0.0, 1.0);
+    //clamp(COLOR.a * threshhold, 0.0, 1.0);
 }

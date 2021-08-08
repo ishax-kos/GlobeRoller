@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/MapView.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/PopupMenu.gd" type="Script" id=3]
 [ext_resource path="res://scripts/Save.gd" type="Script" id=4]
-[ext_resource path="res://default_rec.png" type="Image" id=6]
+[ext_resource path="res://default_rec.png" type="Image" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.486275 )
@@ -22,7 +22,7 @@ corner_detail = 20
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
-defaultImage = ExtResource( 6 )
+defaultImage = ExtResource( 5 )
 
 [node name="MapView1" parent="." instance=ExtResource( 2 )]
 anchor_bottom = 0.5

@@ -6,7 +6,7 @@ var scaleMod := 0.0
 var pan := Vector2(0,0)
 var filterFlag := 1;
 var image = Image.new()
-export var defaultImage : Resource
+export var defaultImage : Image
 
 
 func _ready():
@@ -18,7 +18,7 @@ func _ready():
     if len(args) > 0:
         load_image_path(args[0])
     else:
-        load_image_path(defaultImage.resource_path)
+        load_image(defaultImage)
         defaultImage = null
     $ConfirmationDialog.set_save_size($MapView1/ScrollContainer/TextureRect.texture.get_size())
     get_tree().connect("files_dropped", self, "load_image_dragdrop")
@@ -29,8 +29,8 @@ func _ready():
 
 
 func load_image_dragdrop(files_dropped : PoolStringArray, screen : int):
-    print("go")
-    for a in files_dropped: print(a)
+#    print("go")
+#    for a in files_dropped: print(a)
     load_image_path(files_dropped[0])
     
 
@@ -40,6 +40,12 @@ func load_image_path(path : String):
     reload_image()
     $ConfirmationDialog.set_save_size(image.get_size())
 
+
+
+func load_image(newImage : Image):
+    image = newImage
+    reload_image()
+    $ConfirmationDialog.set_save_size(image.get_size())
 
 
 #func load_image(newImage : Image):

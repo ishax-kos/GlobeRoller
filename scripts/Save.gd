@@ -38,6 +38,28 @@ func _on_ConfirmationDialog_confirmed():
     print("completed")
     yield(saveNode, "confirmed")
     print("completed")
-#    save.visible = false
-    dataImage.save_png(saveNode.current_file)
     
+    print(get_full_path(saveNode))
+#    var node = saveNode.get_child(3).get_child(0).get_child(2).get_child(0)
+#    if node is OptionButton:
+#        print(node.get_item_text(node.selected))
+#    else:
+#        print(node)
+    print(dataImage.save_png(get_full_path(saveNode)))
+    
+    
+    
+func get_full_path(saveNode):
+    var driveSelect = saveNode.get_child(3).get_child(0).get_child(2).get_child(0)
+    var drive = driveSelect.get_item_text(driveSelect.selected)
+    return drive + saveNode.current_path
+
+
+#func print_children_recursive(node:Node):
+#    print(node)
+#    print_children_recursive_(node, 1)
+#
+#func print_children_recursive_(node:Node, depth:int):
+#    for child in node.get_children():
+#        print("  ".repeat(depth), child)
+#        print_children_recursive_(child, depth+1)
