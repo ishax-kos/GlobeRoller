@@ -1,6 +1,10 @@
 
+.output/
+*.tmp
 # Godot-specific ignores
+.godot/
 .import/
+.export/
 export.cfg
 export_presets.cfg
 
@@ -8,4 +12,3 @@ export_presets.cfg
 .mono/
 data_*/
 
-.export/

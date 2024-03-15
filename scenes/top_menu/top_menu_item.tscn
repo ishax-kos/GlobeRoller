@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://byyf6echv106x"]
+
+[ext_resource type="Script" path="res://scenes/top_menu/dropdown_menu.gd" id="1_4ivi1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kj447"]
+bg_color = Color(0.313726, 0.313726, 0.313726, 1)
+
+[node name="Button" type="Button"]
+text = "File"
+flat = true
+script = ExtResource("1_4ivi1")
+
+[node name="PanelContainer" type="PopupPanel" parent="."]
+size = Vector2i(111, 136)
+theme_override_styles/panel = SubResource("StyleBoxFlat_kj447")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+offset_right = 111.0
+offset_bottom = 136.0
+
+[connection signal="pressed" from="." to="." method="_on_file_pressed"]

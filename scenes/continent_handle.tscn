@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://bomjnvnybwjcb"]
+
+[ext_resource type="Texture2D" uid="uid://bfeuu55iy0ijk" path="res://icon.png" id="1_wjawa"]
+
+[sub_resource type="GDScript" id="GDScript_x44pd"]
+script/source = "extends Node3D
+
+var continent: Continent:
+    set(cont):
+        continent = cont
+        $Sprite3D.texture = cont.texture
+        $Sprite3D.scale = Vector3.ONE * cont.scale
+        $Dot.transparency = 1.0
+
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_didew"]
+shading_mode = 0
+
+[sub_resource type="SphereMesh" id="SphereMesh_mcn1v"]
+material = SubResource("StandardMaterial3D_didew")
+radius = 0.02
+height = 0.04
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hxmbk"]
+radius = 0.02
+
+[node name="Transform" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0.748956, 0.66262, 0, -0.66262, 0.748955, 0, 0, 0)
+script = SubResource("GDScript_x44pd")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 2.98023e-08, 1, 0, 0, 0.503881)
+visible = false
+transparency = 1.0
+cast_shadow = 0
+texture = ExtResource("1_wjawa")
+
+[node name="Dot" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.23517e-08, 0.503881)
+rotation_edit_mode = 2
+visible = false
+transparency = 1.0
+cast_shadow = 0
+mesh = SubResource("SphereMesh_mcn1v")
+
+[node name="Area3D" type="Area3D" parent="Dot"]
+process_mode = 4
+visible = false
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Dot/Area3D"]
+shape = SubResource("SphereShape3D_hxmbk")

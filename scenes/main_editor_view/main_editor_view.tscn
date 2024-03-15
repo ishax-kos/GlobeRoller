@@ -1,0 +1,636 @@
+[gd_scene load_steps=24 format=3 uid="uid://dst3pfqhoknmp"]
+
+[ext_resource type="Script" path="res://scenes/main_editor_view/main_editor_view.gd" id="1_e8lwq"]
+[ext_resource type="Script" path="res://types/continent.gd" id="2_eu74s"]
+[ext_resource type="Texture2D" uid="uid://j36tc34yeed8" path="res://maps/default_rec_2.png" id="3_4hclo"]
+[ext_resource type="Script" path="res://scenes/top_menu/dropdown_menu.gd" id="4_iwui4"]
+[ext_resource type="Script" path="res://scenes/main_editor_view/globe_panel.gd" id="5_qmghg"]
+[ext_resource type="Script" path="res://scenes/main_editor_view/globe_mesh.gd" id="6_uqjwb"]
+[ext_resource type="Environment" uid="uid://ctwg7jiwrort5" path="res://default_env.tres" id="7_o0kl6"]
+[ext_resource type="Script" path="res://scenes/main_editor_view/continent_inspector.gd" id="8_ajlbx"]
+[ext_resource type="Script" path="res://scenes/main_editor_view/object_list.gd" id="9_g1kna"]
+[ext_resource type="PackedScene" uid="uid://bkop2yodc3xad" path="res://scenes/main_editor_view/continent_list_entry.tscn" id="10_t5rcs"]
+[ext_resource type="Script" path="res://scenes/main_editor_view/viewport_texture.gd" id="11_qfc3v"]
+[ext_resource type="Script" path="res://confirmation_dialogue.gd" id="12_gunoa"]
+
+[sub_resource type="Resource" id="Resource_byviy"]
+script = ExtResource("2_eu74s")
+projection = 0
+texture = ExtResource("3_4hclo")
+name = "sample grid"
+latitude = 0.0
+longitude = 0.0
+rotation = 0.0
+image_offset = Vector2(0, 0)
+image_rotation = 0.0
+scale = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kj447"]
+bg_color = Color(0.313726, 0.313726, 0.313726, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fjm3e"]
+bg_color = Color(0.313726, 0.313726, 0.313726, 1)
+
+[sub_resource type="Gradient" id="Gradient_tbrrm"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0qykf"]
+gradient = SubResource("Gradient_tbrrm")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_80jgb"]
+viewport_path = NodePath("TextureViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fjfee"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_80jgb")
+
+[sub_resource type="SphereMesh" id="SphereMesh_unb38"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_fjfee")
+radial_segments = 128
+rings = 64
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xe3ue"]
+margin = 0.01
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_drp5i"]
+bg_color = Color(0.6, 0.6, 0.6, 0.337255)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_23sil"]
+viewport_path = NodePath("TextureViewport")
+
+[node name="Base" type="Node"]
+script = ExtResource("1_e8lwq")
+default_continents = Array[ExtResource("2_eu74s")]([SubResource("Resource_byviy")])
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopMenu" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="File" type="Button" parent="VBoxContainer/TopMenu"]
+layout_mode = 2
+action_mode = 0
+text = "File"
+flat = true
+script = ExtResource("4_iwui4")
+
+[node name="PopupPanel" type="PopupPanel" parent="VBoxContainer/TopMenu/File"]
+size = Vector2i(111, 136)
+theme_override_styles/panel = SubResource("StyleBoxFlat_kj447")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TopMenu/File/PopupPanel"]
+offset_right = 111.0
+offset_bottom = 171.0
+
+[node name="New" type="Button" parent="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer"]
+layout_mode = 2
+text = "New"
+flat = true
+alignment = 0
+
+[node name="Open" type="Button" parent="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer"]
+layout_mode = 2
+text = "Open"
+flat = true
+alignment = 0
+
+[node name="Save" type="Button" parent="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer"]
+layout_mode = 2
+text = "Save"
+flat = true
+alignment = 0
+
+[node name="SaveAs" type="Button" parent="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer"]
+layout_mode = 2
+text = "Save As"
+flat = true
+alignment = 0
+
+[node name="ExportImage" type="Button" parent="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer"]
+layout_mode = 2
+text = "Export Image"
+flat = true
+alignment = 0
+
+[node name="Object" type="Button" parent="VBoxContainer/TopMenu"]
+layout_mode = 2
+text = "Object
+"
+flat = true
+script = ExtResource("4_iwui4")
+
+[node name="PopupPanel" type="PopupPanel" parent="VBoxContainer/TopMenu/Object"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_fjm3e")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TopMenu/Object/PopupPanel"]
+offset_right = 100.0
+offset_bottom = 100.0
+
+[node name="Delete" type="Button" parent="VBoxContainer/TopMenu/Object/PopupPanel/VBoxContainer"]
+layout_mode = 2
+text = "Delete"
+flat = true
+alignment = 0
+
+[node name="MainUi" type="HSplitContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GlobePanel" type="TextureRect" parent="VBoxContainer/MainUi"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("GradientTexture1D_0qykf")
+script = ExtResource("5_qmghg")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer/MainUi/GlobePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="3dGlobeRender" type="SubViewportContainer" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer"]
+layout_mode = 2
+mouse_filter = 0
+stretch = true
+
+[node name="GlobeViewport" type="SubViewport" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender"]
+transparent_bg = true
+handle_input_locally = false
+msaa_3d = 1
+size = Vector2i(570, 570)
+render_target_update_mode = 4
+
+[node name="GlobeMesh" type="MeshInstance3D" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport"]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_unb38")
+skeleton = NodePath("")
+script = ExtResource("6_uqjwb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/StaticBody3D"]
+shape = SubResource("SphereShape3D_xe3ue")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport"]
+transform = Transform3D(0.459479, -0.00216022, -0.888186, -0.0016438, 0.999993, -0.00328253, 0.888187, 0.00296826, 0.459472, -1.9496, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport"]
+environment = ExtResource("7_o0kl6")
+
+[node name="CameraPivot" type="Node3D" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport"]
+
+[node name="Camera3D" type="Camera3D" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/CameraPivot"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.23301)
+fov = 27.9
+size = 1.2
+
+[node name="RayCast3D" type="RayCast3D" parent="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/CameraPivot/Camera3D"]
+enabled = false
+target_position = Vector3(0, 0, -3)
+hit_back_faces = false
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/MainUi/GlobePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+columns = 2
+
+[node name="CornerSpace" type="Control" parent="VBoxContainer/MainUi/GlobePanel/GridContainer"]
+layout_mode = 2
+
+[node name="LonSlider" type="HSlider" parent="VBoxContainer/MainUi/GlobePanel/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.0
+value = 0.5
+
+[node name="LatSlider" type="VSlider" parent="VBoxContainer/MainUi/GlobePanel/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+min_value = -0.25
+max_value = 0.25
+step = 0.0
+value = -0.25
+tick_count = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_drp5i")
+
+[node name="SphereControls" type="HFlowContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="OnOff" type="CheckBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RightLeft" type="CheckButton" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+
+[node name="SpeedTextEdit" type="LineEdit" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "1"
+max_length = 100
+virtual_keyboard_type = 2
+caret_blink = true
+
+[node name="SpeedSlider" type="HSlider" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = -10.0
+max_value = 10.0
+step = 0.0
+value = 0.1
+allow_greater = true
+allow_lesser = true
+tick_count = 3
+ticks_on_borders = true
+
+[node name="ContinentInspector" type="PanelContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+script = ExtResource("8_ajlbx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Deselect" type="Button" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "❌"
+
+[node name="UseRadians" type="CheckBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+text = "Radians"
+
+[node name="HBoxLat" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxLat"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lattitude"
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxLat"]
+layout_mode = 2
+min_value = -90.0
+max_value = 90.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+custom_arrow_step = 5.0
+select_all_on_focus = true
+
+[node name="HBoxLon" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxLon"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Longitude"
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxLon"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+custom_arrow_step = 5.0
+select_all_on_focus = true
+
+[node name="HBoxRot" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxRot"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rotation"
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxRot"]
+layout_mode = 2
+max_value = 360.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+custom_arrow_step = 1.0
+select_all_on_focus = true
+
+[node name="Center" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Image"
+
+[node name="HBoxCenterX" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxCenterX"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Offset x"
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxCenterX"]
+layout_mode = 2
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="HBoxCenterY" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxCenterY"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Offset y"
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxCenterY"]
+layout_mode = 2
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="HBoxRotaion2" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxRotaion2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rotation"
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxRotaion2"]
+layout_mode = 2
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="HBoxScale" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxScale"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Scale"
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxScale"]
+layout_mode = 2
+step = 0.001
+value = 1.0
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="HBoxProjection" type="HBoxContainer" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxProjection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Projection"
+
+[node name="MenuButton" type="MenuButton" parent="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxProjection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Projection"
+flat = false
+
+[node name="DataPanel" type="Control" parent="VBoxContainer/MainUi"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer/MainUi/DataPanel"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 44
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer/ScrollContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="ObjectList" type="VBoxContainer" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("9_g1kna")
+entry_scene = ExtResource("10_t5rcs")
+
+[node name="Deselect" type="Button" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Deselect"
+
+[node name="TexturePanel" type="ColorRect" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer/TexturePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+ratio = 2.0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MainUi/DataPanel/VSplitContainer/TexturePanel/AspectRatioContainer"]
+layout_mode = 2
+texture = SubResource("ViewportTexture_23sil")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+physics_object_picking = true
+gui_disable_input = true
+positional_shadow_atlas_quad_0 = 0
+positional_shadow_atlas_quad_1 = 0
+positional_shadow_atlas_quad_2 = 0
+positional_shadow_atlas_quad_3 = 0
+size = Vector2i(4096, 2048)
+render_target_update_mode = 1
+script = ExtResource("11_qfc3v")
+
+[node name="Background" type="ColorRect" parent="TextureViewport"]
+process_priority = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.0823529, 0.231373, 0.54902, 1)
+
+[node name="ContinentList" type="Control" parent="TextureViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Timer" type="Timer" parent="TextureViewport"]
+autostart = true
+
+[node name="Confirmation" type="ConfirmationDialog" parent="."]
+disable_3d = true
+initial_position = 2
+size = Vector2i(348, 179)
+always_on_top = true
+dialog_text = "Are you sure?"
+script = ExtResource("12_gunoa")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+use_native_dialog = true
+script = ExtResource("12_gunoa")
+
+[connection signal="continent_added" from="." to="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/GlobeMesh" method="_on_continent_added"]
+[connection signal="continent_added" from="." to="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer/ScrollContainer/MarginContainer/ObjectList" method="_on_continent_added"]
+[connection signal="continent_added" from="." to="TextureViewport" method="_on_base_continent_added"]
+[connection signal="continent_change_visibility" from="." to="TextureViewport" method="_change_entry_visibility"]
+[connection signal="continent_changed" from="." to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_on_continent_changed"]
+[connection signal="continent_changed" from="." to="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer/ScrollContainer/MarginContainer/ObjectList" method="_on_base_continent_changed"]
+[connection signal="continent_changed" from="." to="TextureViewport" method="_on_base_continent_changed"]
+[connection signal="continent_order_changed" from="." to="TextureViewport" method="_continent_order_changed"]
+[connection signal="continent_removed" from="." to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_on_base_continent_removed"]
+[connection signal="continent_removed" from="." to="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer/ScrollContainer/MarginContainer/ObjectList" method="_on_base_continent_removed"]
+[connection signal="continent_removed" from="." to="TextureViewport" method="_on_base_continent_removed"]
+[connection signal="continent_selected" from="." to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_continent_selected"]
+[connection signal="continent_selected" from="." to="TextureViewport" method="_on_base_continent_selected"]
+[connection signal="continents_reload" from="." to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_on_base_continents_reload"]
+[connection signal="continents_reload" from="." to="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer/ScrollContainer/MarginContainer/ObjectList" method="_on_base_continents_reload"]
+[connection signal="pressed" from="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer/New" to="." method="_on_new_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer/Open" to="." method="_on_open_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer/SaveAs" to="." method="_on_save_as_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopMenu/File/PopupPanel/VBoxContainer/ExportImage" to="." method="_on_export_image_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopMenu/Object/PopupPanel/VBoxContainer/Delete" to="." method="_on_delete_pressed"]
+[connection signal="mouse_exited" from="VBoxContainer/MainUi/GlobePanel" to="TextureViewport" method="_on_globe_panel_mouse_exited"]
+[connection signal="gui_input" from="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender" to="VBoxContainer/MainUi/GlobePanel" method="_on_d_globe_render_gui_input"]
+[connection signal="mouse_exited" from="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender" to="TextureViewport" method="_on_d_globe_render_mouse_exited"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/LonSlider" to="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/GlobeMesh" method="_longitude_changed"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/LatSlider" to="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/GlobeMesh" method="_lattitude_changed"]
+[connection signal="toggled" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls/OnOff" to="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/GlobeMesh" method="_on_off_toggled"]
+[connection signal="toggled" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls/RightLeft" to="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/GlobeMesh" method="_direction_toggled"]
+[connection signal="text_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls/SpeedTextEdit" to="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/GlobeMesh" method="_on_speed_text_edit_text_changed"]
+[connection signal="text_submitted" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls/SpeedTextEdit" to="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/GlobeMesh" method="_new_speed_text"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/Panel/SphereControls/SpeedSlider" to="VBoxContainer/MainUi/GlobePanel/AspectRatioContainer/3dGlobeRender/GlobeViewport/GlobeMesh" method="_new_speed_slider"]
+[connection signal="visibility_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_on_visibility_changed"]
+[connection signal="pressed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxContainer/Deselect" to="." method="deselect"]
+[connection signal="toggled" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/UseRadians" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_on_use_radians_toggled"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxLat/SpinBox" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_lat_changed"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxLon/SpinBox" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_lon_changed"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxRot/SpinBox" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_rot_changed"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxCenterX/SpinBox" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_center_x_changed"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxCenterY/SpinBox" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_center_y_changed"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxRotaion2/SpinBox" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_rotation2_changed"]
+[connection signal="value_changed" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxScale/SpinBox" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_scale_changed"]
+[connection signal="about_to_popup" from="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector/VBoxContainer/HBoxProjection/MenuButton" to="VBoxContainer/MainUi/GlobePanel/GridContainer/VBoxContainer/ContinentInspector" method="_on_menu_button_about_to_popup"]
+[connection signal="pressed" from="VBoxContainer/MainUi/DataPanel/VSplitContainer/Panel/VBoxContainer/Deselect" to="." method="deselect"]
+[connection signal="timeout" from="TextureViewport/Timer" to="TextureViewport" method="_on_timer_timeout"]
+[connection signal="canceled" from="Confirmation" to="Confirmation" method="_on_canceled"]
+[connection signal="confirmed" from="Confirmation" to="Confirmation" method="_on_confirmed"]
+[connection signal="canceled" from="FileDialog" to="FileDialog" method="_on_canceled"]
+[connection signal="confirmed" from="FileDialog" to="FileDialog" method="_on_confirmed"]
+[connection signal="file_selected" from="FileDialog" to="FileDialog" method="_on_file_selected"]
+[connection signal="files_selected" from="FileDialog" to="FileDialog" method="_on_files_selected"]
